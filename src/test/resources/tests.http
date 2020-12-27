@@ -1,21 +1,21 @@
-http://localhost:8080/flats
+http://localhost:8080/products
 
 ###
 
-http://localhost:8080/flats/1
+http://localhost:8080/products/1
 
 ###
 
-http://localhost:8080/flats/owners/1
+http://localhost:8080/products/worker/1
 
 ###
 
-http://localhost:8080/flats/1/save?ownerId=1&district=Московский&price=3&rooms=2
+http://localhost:8080/products/1/save?workerId=1&items=Молоко&price=50&quantity=20
 
 ###
 
-http://localhost:8080/flats/1/save?ownerId=2&district=Приволжский&price=3&rooms=2
+http://localhost:8080/products/1/save?workerId=2&items=Хлеб&price=30&quantity=50
 
 ###
 
-http://localhost:8080/flats/3/remove
+http://localhost:8080/products/3/remove

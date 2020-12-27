@@ -1,9 +1,9 @@
-INSERT INTO owners (id, name)
+INSERT INTO worker (id, name)
 VALUES (1, 'Vanya'),
        (2, 'Sasha');
 
-INSERT INTO flats (owner_id, district, price, rooms)
-VALUES (1, 'Ново-Савиновский', 5, 1),
-       (2, 'Кировский', 6, 3),
-       (3, 'Московский', 4, 2),
-       (4, 'Вахитовский', 3, 4);
+INSERT INTO products (worker_id, items, price, quantity)
+VALUES (1, 'Молоко', 50, 20),
+       (2, 'Хлеб', 30, 50),
+       (3, 'Масло', 100, 20),
+       (4, 'Яблоки', 50, 200);

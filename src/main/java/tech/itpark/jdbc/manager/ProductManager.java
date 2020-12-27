@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import tech.itpark.jdbc.exception.DataAccessException;
 import tech.itpark.jdbc.exception.NotFoundException;
-import tech.itpark.jdbc.model.Flat;
+import tech.itpark.jdbc.model.Products;
 
 import javax.sql.DataSource;
 import java.sql.*;
@@ -13,17 +13,17 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-public class FlatManager {
+public class ProductManager {
     private final DataSource dataSource;
 
-    public List<Flat> getAll() {
+    public List<Products> getAll() {
         try (
                 Connection conn = dataSource.getConnection();
                 Statement stmt = conn.createStatement();
-                ResultSet rs = stmt.executeQuery("SELECT id, owner_id, district, price, rooms FROM flats order by id LIMIT 50")
+                ResultSet rs = stmt.executeQuery("SELECT id, worker_id, items, price, quantity FROM Products order by id LIMIT 50")
         ) {
 
-            List<Flat> items = new ArrayList<>();
+            List<Products> items = new ArrayList<>();
             while (rs.next()) {
                 items.add(mapRow(rs));
 
@@ -36,10 +36,10 @@ public class FlatManager {
     }
 
 
-    public Flat getById(long id) {
+    public Products getById(long id) {
         try (
                 Connection conn = dataSource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT id,owner_id,district, price, rooms FROM flats WHERE id = ?");
+                PreparedStatement stmt = conn.prepareStatement("SELECT id,worker_id,items, price, quantity FROM Products WHERE id = ?");
         ) {
             stmt.setLong(1, id);
             ResultSet rs = stmt.executeQuery();
@@ -55,15 +55,15 @@ public class FlatManager {
         }
     }
 
-    public List<Flat> getByOwnerId(long ownerId) {
+    public List<Products> getByworkerId(long workerId) {
         try (
                 Connection conn = dataSource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("SELECT id,owner_id,district, price, rooms FROM flats WHERE owner_id = ?");
+                PreparedStatement stmt = conn.prepareStatement("SELECT id,worker_id,items, price, quantity FROM Products WHERE worker_id = ?");
         ) {
-            stmt.setLong(1, ownerId);
+            stmt.setLong(1, workerId);
             ResultSet rs = stmt.executeQuery();
 
-            List<Flat> items = new ArrayList<>();
+            List<Products> items = new ArrayList<>();
             while (rs.next()) {
                 items.add(mapRow(rs));
 
@@ -75,20 +75,20 @@ public class FlatManager {
         }
     }
 
-    public Flat save(Flat item) {
+    public Products save(Products item) {
         if (item.getId() == 0) {
             try (
                     Connection connection = dataSource.getConnection();
                     PreparedStatement stmt = connection.prepareStatement(
-                            "INSERT INTO flats(owner_id, district, price, rooms) VALUES (?, ?, ?, ?)",
+                            "INSERT INTO Products(worker_id, items, price, quantity) VALUES (?, ?, ?, ?)",
                             Statement.RETURN_GENERATED_KEYS
                     );
             ) {
                 int index = 0;
-                stmt.setLong(++index, item.getOwner_id());
-                stmt.setString(++index, item.getDistrict());
+                stmt.setLong(++index, item.getWorkers_id());
+                stmt.setString(++index, item.getItems());
                 stmt.setInt(++index, item.getPrice());
-                stmt.setInt(++index, item.getRooms());
+                stmt.setInt(++index, item.getQuantity());
 
                 stmt.execute();
 
@@ -108,13 +108,13 @@ public class FlatManager {
 
         try (
                 Connection connection = dataSource.getConnection();
-                PreparedStatement stmt = connection.prepareStatement("UPDATE flats SET owner_id = ?, district = ?, price = ?, rooms = ? WHERE id = ?");
+                PreparedStatement stmt = connection.prepareStatement("UPDATE Products SET worker_id = ?, items = ?, price = ?, quantity = ? WHERE id = ?");
         ) {
             int index = 0;
-            stmt.setLong(++index, item.getOwner_id());
-            stmt.setString(++index, item.getDistrict());
+            stmt.setLong(++index, item.getWorkers_id());
+            stmt.setString(++index, item.getItems());
             stmt.setInt(++index, item.getPrice());
-            stmt.setInt(++index, item.getRooms());
+            stmt.setInt(++index, item.getQuantity());
             stmt.setLong(++index, item.getId());
 
             stmt.execute();
@@ -125,12 +125,12 @@ public class FlatManager {
         }
     }
 
-    public Flat removeById(long id) {
-        Flat item = getById(id);
+    public Products removeById(long id) {
+        Products item = getById(id);
 
         try (
                 Connection conn = dataSource.getConnection();
-                PreparedStatement stmt = conn.prepareStatement("DELETE FROM flats WHERE id = ?");
+                PreparedStatement stmt = conn.prepareStatement("DELETE FROM Products WHERE id = ?");
         ) {
             stmt.setLong(1, id);
             stmt.execute();
@@ -140,13 +140,13 @@ public class FlatManager {
         return item;
     }
 
-    private Flat mapRow(ResultSet rs) throws SQLException {
-        return new Flat(
+    private Products mapRow(ResultSet rs) throws SQLException {
+        return new Products(
                 rs.getLong("id"),
-                rs.getLong("owner_id"),
-                rs.getString("district"),
+                rs.getLong("worker_id"),
+                rs.getString("items"),
                 rs.getInt("price"),
-                rs.getInt("rooms")
+                rs.getInt("quantity")
         );
     }
 }

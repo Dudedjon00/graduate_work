@@ -3,10 +3,10 @@ package tech.itpark.jdbc.model;
 import lombok.Value;
 
 @Value
-public class Flat {
+public class Products {
     long id;
-    long owner_id;
-    String district;
+    long workers_id;
+    String items;
     int price;
-    int rooms;
+    int quantity;
 }

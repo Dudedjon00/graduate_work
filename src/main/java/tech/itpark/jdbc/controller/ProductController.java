@@ -5,45 +5,45 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import tech.itpark.jdbc.manager.FlatManager;
-import tech.itpark.jdbc.model.Flat;
+import tech.itpark.jdbc.manager.ProductManager;
+import tech.itpark.jdbc.model.Products;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/flats")
+@RequestMapping("/products")
 @RequiredArgsConstructor
-public class FlatController {
-    private final FlatManager manager;
+public class ProductController {
+    private final ProductManager manager;
 
     @RequestMapping
-    public List<Flat> getall() {
+    public List<Products> getall() {
         return manager.getAll();
     }
 
     @RequestMapping("/{id}")
-    public Flat getById(@PathVariable long id) {
+    public Products getById(@PathVariable long id) {
         return manager.getById(id);
     }
 
-    @RequestMapping("/owners/{ownerId}")
-    public List<Flat> getByOwnerId(@PathVariable long ownerId) {
-        return manager.getByOwnerId(ownerId);
+    @RequestMapping("/Workers/{WorkerId}")
+    public List<Products> getByWorkerId(@PathVariable long WorkerId) {
+        return manager.getByworkerId(WorkerId);
     }
 
     @RequestMapping("/{id}/save")
-    public Flat save(
+    public Products save(
             @PathVariable long id,
-            @RequestParam long ownerId,
+            @RequestParam long WorkerId,
             @RequestParam String district,
             @RequestParam int price,
             @RequestParam int rooms
             ) {
-        return manager.save(new Flat(id, ownerId, district, price, rooms));
+        return manager.save(new Products(id, WorkerId, district, price, rooms));
     }
 
     @RequestMapping("/{id}/remove")
-    public Flat removeById(@PathVariable long id) {
+    public Products removeById(@PathVariable long id) {
         return manager.removeById(id);
     }
 }
